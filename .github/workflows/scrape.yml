@@ -2,33 +2,33 @@ name: Git Scraping Example
 
 on:
   schedule:
-    - cron: "0 * * * *"   # Runs every 1 hour
-  workflow_dispatch:       # Manual run option
+    - cron: "0 * * * *"   # Runs every hour
+  workflow_dispatch:
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Clone your GitHub repository
+      # Step 1: Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup Python environment
+      # Step 2: Setup Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      # Step 3: Install required libraries
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Step 4: Run the scraper script
+      # Step 4: Run scraper
       - name: Run scraper
         run: python scrape.py
 
-      # Step 5: Commit and push changes (if any)
+      # Step 5: Commit and push
       - name: Commit and push
         run: |
           git config user.name "github-actions"
