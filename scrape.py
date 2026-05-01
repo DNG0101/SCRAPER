@@ -2,6 +2,7 @@
 import requests              # To send HTTP request
 from bs4 import BeautifulSoup  # To parse HTML
 import json                  # To save data in JSON format
+import time
 
 # Step 1: Define the URL you want to scrape
 url = "http://quotes.toscrape.com"
@@ -21,17 +22,16 @@ quotes_data = []
 # Step 6: Loop through each quote block and extract data
 for quote in quotes_html:
     
-    # Extract the quote text
     text = quote.find("span", class_="text").get_text()
-    
-    # Extract the author name
     author = quote.find("small", class_="author").get_text()
     
-    # Store extracted data into dictionary
+    print(f"Scraping: {text} - {author}")   # 👈 LIVE OUTPUT
+    
     quotes_data.append({
         "text": text,
         "author": author
     })
+    time.sleep(1)
 
 # Step 7: Save the scraped data into a JSON file
 with open("quotes.json", "w") as file:
