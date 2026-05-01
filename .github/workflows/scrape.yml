@@ -1,0 +1,38 @@
+name: Git Scraping Example
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # Runs every 1 hour
+  workflow_dispatch:       # Manual run option
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Clone your GitHub repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Python environment
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      # Step 3: Install required libraries
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Step 4: Run the scraper script
+      - name: Run scraper
+        run: python scrape.py
+
+      # Step 5: Commit and push changes (if any)
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add quotes.json
+          git commit -m "Updated quotes data" || echo "No changes"
+          git push
